@@ -20,10 +20,6 @@ export function Sidebar() {
     lg: false,
   });
 
-  function handleCloseDrawer() {
-
-  }
-
   if (isDrawerSidebar) {
     return (
       <Drawer
