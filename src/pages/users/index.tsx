@@ -11,7 +11,9 @@ import {
   Td,
   Th,
   Thead,
-  Tr
+  Tr,
+  useBreakpointValue,
+  IconButton
 } from "@chakra-ui/react";
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
 
@@ -20,6 +22,11 @@ import { Pagination } from "../../components/Pagination";
 import { Sidebar } from "../../components/Sidebar";
 
 export default function UserList() {
+  const isWideScreen = useBreakpointValue({
+    base: false,
+    lg: true,
+  });
+
   return (
     <Box>
       <Header />
@@ -33,7 +40,7 @@ export default function UserList() {
       >
         <Sidebar />
         <Box flex='1' borderRadius={8} bg='gray.800' p='8'>
-          <Flex mb='8' justify='space-between' align='center'>
+          <Flex mb={['4', '4', '8']} justify='space-between' align='center'>
             <Heading size='lg' fontWeight='normal'>
               Usuários
             </Heading>
@@ -48,20 +55,20 @@ export default function UserList() {
             </Button>
           </Flex>
 
-          <Table colorScheme='whiteAlpha' >
+          <Table colorScheme='whiteAlpha'>
             <Thead>
               <Tr>
-                <Th ph='6' color='gray.300' width='8'>
+                <Th px={['3', '3', '6']} color='gray.300' width='8'>
                   <Checkbox colorScheme='pink' />
                 </Th>
                 <Th>Usuário</Th>
-                <Th>Data de cadastro</Th>
-                <Th width='8'></Th>
+                { isWideScreen && <Th>Data de cadastro</Th> }
+                <Th width={['3', '3', '6']}></Th>
               </Tr>
             </Thead>
             <Tbody>
               <Tr>
-                <Td px='6'>
+                <Td px={['3', '3', '6']}>
                   <Checkbox colorScheme='pink' />
                 </Td>
                 <Td>
@@ -70,21 +77,32 @@ export default function UserList() {
                     <Text fontSize='sm'>paulocsmg@gmail.com</Text>
                   </Box>
                 </Td>
-                <Td>10 de Dezembro de 2020</Td>
+                { isWideScreen && <Td>10 de Dezembro de 2020</Td> }
                 <Td>
-                  <Button
-                    as='a'
-                    size='sm'
-                    fontSize='sm'
-                    colorScheme='purple'
-                    leftIcon={<Icon as={RiPencilLine} fontSize='16' />}
-                  >
-                    Editar
-                  </Button>
+                  {
+                    isWideScreen
+                    ? <Button
+                        as='a'
+                        size='sm'
+                        fontSize='sm'
+                        colorScheme='purple'
+                        leftIcon={<Icon as={RiPencilLine} fontSize='16' />}
+                      >
+                        Editar
+                      </Button>
+                    : <IconButton
+                        size='sm'
+                        colorScheme='purple'
+                        borderRadius='6'
+                        aria-label='Edit user'
+                        icon={<Icon as={RiPencilLine} />}
+                        fontSize='16'
+                      />
+                  }
                 </Td>
               </Tr>
               <Tr>
-                <Td px='6'>
+                <Td px={['3', '3', '6']}>
                   <Checkbox colorScheme='pink' />
                 </Td>
                 <Td>
@@ -93,17 +111,28 @@ export default function UserList() {
                     <Text fontSize='sm'>paulocsmg@gmail.com</Text>
                   </Box>
                 </Td>
-                <Td>10 de Dezembro de 2020</Td>
+                { isWideScreen && <Td>10 de Dezembro de 2020</Td> }
                 <Td>
-                  <Button
-                    as='a'
-                    size='sm'
-                    fontSize='sm'
-                    colorScheme='purple'
-                    leftIcon={<Icon as={RiPencilLine} fontSize='16' />}
-                  >
-                    Editar
-                  </Button>
+                  {
+                    isWideScreen
+                    ? <Button
+                        as='a'
+                        size='sm'
+                        fontSize='sm'
+                        colorScheme='purple'
+                        leftIcon={<Icon as={RiPencilLine} fontSize='16' />}
+                      >
+                        Editar
+                      </Button>
+                    : <IconButton
+                        size='sm'
+                        colorScheme='purple'
+                        borderRadius='6'
+                        aria-label='Edit user'
+                        icon={<Icon as={RiPencilLine} />}
+                        fontSize='16'
+                      />
+                  }
                 </Td>
               </Tr>
             </Tbody>
