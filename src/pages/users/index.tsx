@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
+import { useEffect } from "react";
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
 
 import { Header } from "../../components/Header";
@@ -28,6 +29,13 @@ export default function UserList() {
     base: false,
     lg: true,
   });
+
+  useEffect(() => {
+    fetch('http://localhost:3000/api/users')
+      .then((resp) => resp.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error));
+  }, []);
 
   return (
     <Box>
@@ -66,7 +74,7 @@ export default function UserList() {
                   <Checkbox colorScheme='pink' />
                 </Th>
                 <Th>Usuário</Th>
-                { isWideScreen && <Th>Data de cadastro</Th> }
+                {isWideScreen && <Th>Data de cadastro</Th>}
                 <Th width={['3', '3', '6']}></Th>
               </Tr>
             </Thead>
@@ -81,11 +89,11 @@ export default function UserList() {
                     <Text fontSize='sm'>paulocsmg@gmail.com</Text>
                   </Box>
                 </Td>
-                { isWideScreen && <Td>10 de Dezembro de 2020</Td> }
+                {isWideScreen && <Td>10 de Dezembro de 2020</Td>}
                 <Td>
                   {
                     isWideScreen
-                    ? <Button
+                      ? <Button
                         as='a'
                         size='sm'
                         fontSize='sm'
@@ -94,7 +102,7 @@ export default function UserList() {
                       >
                         Editar
                       </Button>
-                    : <IconButton
+                      : <IconButton
                         size='sm'
                         colorScheme='purple'
                         borderRadius='6'
@@ -115,11 +123,11 @@ export default function UserList() {
                     <Text fontSize='sm'>paulocsmg@gmail.com</Text>
                   </Box>
                 </Td>
-                { isWideScreen && <Td>10 de Dezembro de 2020</Td> }
+                {isWideScreen && <Td>10 de Dezembro de 2020</Td>}
                 <Td>
                   {
                     isWideScreen
-                    ? <Button
+                      ? <Button
                         as='a'
                         size='sm'
                         fontSize='sm'
@@ -128,7 +136,7 @@ export default function UserList() {
                       >
                         Editar
                       </Button>
-                    : <IconButton
+                      : <IconButton
                         size='sm'
                         colorScheme='purple'
                         borderRadius='6'

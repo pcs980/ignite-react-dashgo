@@ -3,6 +3,11 @@ import { ChakraProvider } from '@chakra-ui/react';
 
 import { DrawerProvider } from '../contexts/DrawerContext';
 import { theme } from '../styles/theme';
+import { makeServer } from '../services/mirage';
+
+if (process.env.NODE_ENV === 'development') {
+  makeServer();
+}
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
