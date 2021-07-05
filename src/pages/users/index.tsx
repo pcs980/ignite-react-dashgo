@@ -17,7 +17,6 @@ import {
   Spinner
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { useEffect } from "react";
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
 import { useQuery } from 'react-query';
 
@@ -25,17 +24,23 @@ import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
 import { Sidebar } from "../../components/Sidebar";
 
-type User = {
+import { api } from "../../services/api";
+
+interface User {
+  id: number;
   name: string;
   email: string;
-  created_at: Date;
-};
+  createdAt: string;
+}
+
+interface Response {
+  users: User[];
+}
 
 export default function UserList() {
   const { data, error, isLoading, isFetching } = useQuery('users', async () => {
-    const response = await fetch('http://localhost:3000/api/users');
-    const data = await response.json();
-
+    const { data } = await api.get<Response>('/users');
+    console.log(data);
     const users = data.users.map((user) => ({
       ...user,
       createdAt: new Date(user.createdAt).toLocaleDateString('pt-BR', {
