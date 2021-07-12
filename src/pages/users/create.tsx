@@ -9,6 +9,8 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useMutation } from "react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from 'yup';
@@ -16,6 +18,8 @@ import * as yup from 'yup';
 import { Input } from "../../components/Form/Input";
 import { Header } from "../../components/Header";
 import { Sidebar } from "../../components/Sidebar";
+import { api } from "../../services/api";
+import { queryClient } from "../../services/queryClient";
 
 type UserFormData = {
   name: string;
@@ -32,21 +36,37 @@ const userFormSchema = yup.object().shape({
     .email('E-mail inválido'),
   password: yup.string()
     .required('A senha é obrigatória')
-    .min(5, 'A senha deve ter pelo menos 3 caracteres')
+    .min(3, 'A senha deve ter pelo menos 3 caracteres')
     .max(20, 'A senha deve ter até 20 caracteres'),
   confirmPassword: yup.string()
     .oneOf([null, yup.ref('password')], 'Repita a sua senha'),
 });
 
 export default function Createuser() {
+  const router = useRouter();
+
+  const createUser = useMutation(async (user: UserFormData) => {
+    const response = await api.post('users', {
+      user: {
+        ...user,
+        created_at: new Date(),
+      }
+    });
+    return response.data.user;
+  }, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('users');
+    }
+  });
+
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(userFormSchema),
   });
   const { errors } = formState;
 
   const handleCreateUser: SubmitHandler<UserFormData> = async (values, event) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    console.log(values, event);
+    await createUser.mutateAsync(values);
+    router.push('/users');
   };
 
   return (
