@@ -16,7 +16,8 @@ import {
   IconButton,
   Spinner
 } from "@chakra-ui/react";
-import Link from "next/link";
+import NextLink from "next/link";
+import { useState } from "react";
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
 
 import { Header } from "../../components/Header";
@@ -25,7 +26,8 @@ import { Sidebar } from "../../components/Sidebar";
 import { useUsers } from "../../services/hooks/useUsers";
 
 export default function UserList() {
-  const { data, error, isLoading, isFetching } = useUsers();
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data, error, isLoading, isFetching } = useUsers(currentPage);
 
   const isWideScreen = useBreakpointValue({
     base: false,
@@ -51,7 +53,7 @@ export default function UserList() {
                 (isFetching && !isLoading) && (<Spinner size='sm' color='gray.500' ml='4' />)
               }
             </Heading>
-            <Link href='/users/create' passHref>
+            <NextLink href='/users/create' passHref>
               <Button
                 as='a'
                 size='sm'
@@ -61,7 +63,7 @@ export default function UserList() {
               >
                 Novo usuário
               </Button>
-            </Link>
+            </NextLink>
           </Flex>
 
           {
@@ -88,7 +90,7 @@ export default function UserList() {
                   </Thead>
                   <Tbody>
                     {
-                      data.map((user) => (
+                      data.users.map((user) => (
                         <Tr key={user.id}>
                           <Td px={['3', '3', '6']}>
                             <Checkbox colorScheme='pink' />
@@ -128,7 +130,11 @@ export default function UserList() {
                   </Tbody>
                 </Table>
 
-                <Pagination />
+                <Pagination
+                  totalCount={data.totalCount}
+                  page={currentPage}
+                  onPageChange={setCurrentPage}
+                />
               </>
             )
           }
